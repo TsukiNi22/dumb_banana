@@ -29,6 +29,11 @@ except ImportError as e:
 def neuron_adjustement(dumb):
     #for round_nb in range(dumb.training_round):
     for round_nb in range(1):
+        variations = []
         for i in range(len(dumb.dataset[dumb.column])):
             estimation = dumb.estimation(i)
+            variations.append(dumb.dataset[dumb.column][i] - estimation)
             print(f"n°{i} = {estimation} | {dumb.dataset[dumb.column][i]}")
+        variation = sum(variations) / len(variations)
+        print(f"Variation: {variation}")
+        dumb.adjust(variation, )

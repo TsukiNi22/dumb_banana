@@ -45,10 +45,19 @@ class DumbBanana():
         self.neuron_network = [] # [bias, coef, coef, ...] = neuron | [neuron, ...] = layer | [layer, ...] = neuron_network
         self.neuron_values = []
 
+    def reset_neuron_values(self):
+        for i in range(len(self.neuron_values)):
+            layer = self.neuron_values[i]
+            for j in range(len(layer)):
+                layer[j] = self.neuron_network[i][j][0]
+
     def estimation(self, row):
+        # reset the value stored in neuron_values
+        self.reset_neuron_values()
+
+        # get the line value from the dataset row
         data = []
         keys = list(self.dataset.keys())
-
         keys.pop(keys.index(self.column))
         try:
             for key in keys:
@@ -56,7 +65,25 @@ class DumbBanana():
         except IndexError as e:
             print(f"All the column of the dataset must be at least of the '{self.column}' column size.")
             exit(1)
+
+        # setup the data for the first neuron row
+        for i in range(len(data)):
+            self.neuron_values[0][i] = data[i]
+
+        # make the calculation from the row of data
+        for i in range(len(self.neuron_network) - 1):
+            layer = self.neuron_network[i]
+            for j in range(len(layer)):
+                neuron = layer[j]
+                for k in range(len(neuron) - 1):
+                    coef = neuron[k + 1]
+                    self.neuron_values[i + 1][k] += self.neuron_values[i][j] * coef
+
         return self.neuron_values[-1][0]
+
+    def adjust(self, variation):
+        
+        pass
 
     def get_neuron(self):
         try:
