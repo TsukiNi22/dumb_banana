@@ -1,0 +1,25 @@
+# === Python ===
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.log
+
+# === Neovim / nvim ===
+# Swap, backup et undo files
+*.swp
+*.swo
+*.un~
+*.bak
+*.tmp
+
+# Neovim-specific state (si utilisé)
+.nv/
+.nvim/
+session.vim
