@@ -38,7 +38,6 @@ class DumbBanana():
 
         # generated value
         self.generated_neuron = []
-        self.generated_column = []
 
     def get_neuron(self):
         try:
@@ -57,9 +56,8 @@ class DumbBanana():
             exit(1)
 
     def init_neuron(self):
-        keys = list(self.dataset.keys())
-        
         # check the dictionary value and the asked column
+        keys = list(self.dataset.keys())
         if (not self.column in keys):
             print(f"Can't found the column '{self.column}' in the dictionary keys.")
             exit(1)
@@ -82,6 +80,8 @@ class DumbBanana():
                 return True
 
         # setup generated neuron list
+        if (not all(isinstance(val, int) for val in self.layer):
+            print(f"Invalid value type in the given layer, can only be int.")
         for neuron_nb in len(self.layer):
             layer = []
             for i in range(neuron_nb):
@@ -91,6 +91,15 @@ class DumbBanana():
         return False
 
     def init_column(self):
+        # check the dictionary value
+        keys = list(self.dataset.keys())
+        for key in keys:
+            if (not all(isinstance(val, int) for val in self.dataset[key]):
+                print(f"Invalid value in the dictionary at the column '{key}', can only be int or float.")
+                exit(1)
+
+        # get the past generated neuron
         if (path.isfile(neuron)):
             print(f"The given neuron network path is not a valid path: {neuron}")
             exit(1)
+        self.get_neuron()

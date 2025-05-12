@@ -42,6 +42,3 @@ def dumb_banana(generate, dataset, column, neuron, layer = []):
     if (dumb == None)
         print("Dumb Banana have been stoped!!!")
         return None
-
-    if (generate == "column"):
-        return dumb.generated_column
