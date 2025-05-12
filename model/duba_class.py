@@ -20,6 +20,7 @@ File Description:
 """ Import """
 try:
     from os import path, makedirs
+    from json import load, dump
 except ImportError as e:
     print(f"Import Error: {e}")
     exit(1)
@@ -38,6 +39,22 @@ class DumbBanana():
         # generated value
         self.generated_neuron = []
         self.generated_column = []
+
+    def get_neuron(self):
+        try:
+            with open(self.neuron, "r") as file:
+                self.layer = load(file)
+        except PermissionError:
+            print(f"Invalid permission, can't get the neuron in '{self.neuron}'.")
+            exit(1)
+    
+    def save_neuron(self):
+        try:
+            with open(self.neuron, "w") as file:
+                dump(self.generated_neuron, file)
+        except PermissionError:
+            print(f"Invalid permission, can't save the generated neuron at '{self.neuron}'.")
+            exit(1)
 
     def init_neuron(self):
         keys = list(self.dataset.keys())
