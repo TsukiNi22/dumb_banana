@@ -40,4 +40,6 @@ def dumb_banana(generate, dataset, column, neuron, layer = []):
     dumb = argument_handler(generate, dataset, column, neuron, layer)
 
     if (dumb == None):
-        print("Dumb Banana have been stoped!!!")
+        print("Dumb Banana have been stoped.")
+
+    pass

@@ -37,20 +37,21 @@ class DumbBanana():
         self.layer = layer
 
         # generated value
-        self.generated_neuron = []
+        self.neuron_network = []
+        self.neuron_values = []
 
     def get_neuron(self):
         try:
             with open(self.neuron, "r") as file:
-                self.layer = load(file)
+                self.neuron_network = load(file)
         except PermissionError:
-            print(f"Invalid permission, can't get the neuron in '{self.neuron}'.")
+            print(f"Invalid permission, can't get the neuron network in '{self.neuron}'.")
             exit(1)
     
     def save_neuron(self):
         try:
             with open(self.neuron, "w") as file:
-                dump(self.generated_neuron, file)
+                dump(self.neuron_network, file)
         except PermissionError:
             print(f"Invalid permission, can't save the generated neuron at '{self.neuron}'.")
             exit(1)
@@ -79,27 +80,54 @@ class DumbBanana():
             if (res == "N"  or res == "n" or res == "No" or res == "no" or res == "NO" or res == "nO"):
                 return True
 
-        # setup generated neuron list
+        # setup the neuron network
         if (not all(isinstance(val, int) for val in self.layer)):
             print(f"Invalid value type in the given layer, can only be int.")
-        for neuron_nb in len(self.layer):
-            layer = []
+        # add the neuron for the input
+        layer_links = []
+        layer_values = []
+        for i in range(len(keys) - 1):
+            layer_links.append([])
+            layer_values.append(0)
+        self.neuron_network.append(layer_links)
+        self.neuron_values.append(layer_values)
+        # add the neuron of the chosen layer
+        for neuron_nb in self.layer:
+            layer_links = []
+            layer_values = []
             for i in range(neuron_nb):
-                layer.append(1)
-            self.generated_neuron.append(layer)
+                layer_links.append([])
+                layer_values.append(0)
+            self.neuron_network.append(layer_links)
+            self.neuron_values.append(layer_values)
+        # add the last neuron who synthetise all
+        self.neuron_values.append([0])
+        self.setup_neuron_value()
 
         return False
 
     def init_column(self):
         # check the dictionary value
         keys = list(self.dataset.keys())
+        if (self.column in keys):
+            res = str(input("The column '{self.column}' already exit, do you want to overwrite the column values (y/n)?"))
+            if (res == "N"  or res == "n" or res == "No" or res == "no" or res == "NO" or res == "nO"):
+                return True
         for key in keys:
             if (not all(isinstance(val, int) for val in self.dataset[key])):
                 print(f"Invalid value in the dictionary at the column '{key}', can only be int or float.")
                 exit(1)
 
-        # get the past generated neuron
+        # setup the neuron network
         if (path.isfile(neuron)):
             print(f"The given neuron network path is not a valid path: {neuron}")
             exit(1)
         self.get_neuron()
+        for i in range(len(self.neuron_network)):
+            layer_values = []
+            for j in range(len(self.neuron_network[i])):
+                layer_values.append(0)
+            self.neuron_values.append(layer_values)
+        self.neuron_values.append([0])
+        
+        return False

@@ -47,5 +47,6 @@ def argument_handler(generate, dataset, column, neuron, layer):
         if (dumb.init_neuron()):
             return None
     else:
-        dumb.init_column()
+        if (dumb.init_column()):
+            return None
     return dumb
