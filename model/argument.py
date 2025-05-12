@@ -25,9 +25,9 @@ except ImportError as e:
     exit(1)
 
 """ Program """
-def argument_handler(generate, dataset, column, neuron, layer):
+def argument_handler(generate, dataset, column, neuron, layer, variance, variance_time_decrease, training_round):
     # init the neuron network
-    dumb = DumbBanana(generate, dataset, column, neuron, layer)
+    dumb = DumbBanana(generate, dataset, column, neuron, layer, variance, variance_time_decrease, training_round)
 
     # check the type of the argument passed
     if (generate != "neuron" and generate != "column"):
@@ -41,6 +41,15 @@ def argument_handler(generate, dataset, column, neuron, layer):
         exit(1)
     if (generate == "neuron" and not isinstance(layer, list)):
         print("The given layer is not a list of int value.")
+        exit(1)
+    if (generate == "neuron" and not isinstance(variance, int)):
+        print("The given variance is not a int value.")
+        exit(1)
+    if (generate == "neuron" and not isinstance(variance_time_decrease, int)):
+        print("The given variance time decrease is not a int value.")
+        exit(1)
+    if (generate == "neuron" and not isinstance(training_round, int)):
+        print("The given variance time decrease is not a int value.")
         exit(1)
 
     if (generate == "neuron"):

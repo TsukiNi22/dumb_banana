@@ -28,16 +28,21 @@ except ImportError as e:
 """ Class """
 class DumbBanana():
     
-    def __init__(self, generate, dataset, column, neuron, layer):
+    def __init__(self, generate, dataset, column, neuron, layer, variance, variance_time_decrease, training_round):
         # given argument
         self.generate = generate
         self.dataset = dataset
         self.column = column
         self.neuron = neuron
-        self.layer = layer
 
-        # generated value
-        self.neuron_network = []
+        # option
+        self.layer = layer
+        self.variance = variance
+        self.variance_time_decrease = variance_time_decrease
+        self.training_round = training_round
+
+        # neuron data
+        self.neuron_network = [] # [bias, coef, coef, ...] = neuron | [neuron, ...] = layer | [layer, ...] = neuron_network
         self.neuron_values = []
 
     def get_neuron(self):
@@ -83,25 +88,30 @@ class DumbBanana():
         # setup the neuron network
         if (not all(isinstance(val, int) for val in self.layer)):
             print(f"Invalid value type in the given layer, can only be int.")
+        self.layer.append(1)
         # add the neuron for the input
         layer_links = []
         layer_values = []
         for i in range(len(keys) - 1):
-            layer_links.append([])
+            layer_links.append([1])
+            for j in range(self.layer[0]):
+                layer_links[-1].append(1)
             layer_values.append(0)
         self.neuron_network.append(layer_links)
         self.neuron_values.append(layer_values)
         # add the neuron of the chosen layer
-        for neuron_nb in self.layer:
+        for i in range(len(self.layer)):
             layer_links = []
             layer_values = []
-            for i in range(neuron_nb):
-                layer_links.append([])
+            for j in range(self.layer[i]):
+                layer_links.append([1])
+                if (i + 1 < len(self.layer)):
+                    for k in range(self.layer[i + 1]):
+                        layer_links[-1].append(1)
                 layer_values.append(0)
             self.neuron_network.append(layer_links)
             self.neuron_values.append(layer_values)
-        # add the last neuron who synthetise all
-        self.neuron_values.append([0])
+        print(self.neuron_values)
 
         return False
 
@@ -127,6 +137,6 @@ class DumbBanana():
             for j in range(len(self.neuron_network[i])):
                 layer_values.append(0)
             self.neuron_values.append(layer_values)
-        self.neuron_values.append([0])
+        print(self.neuron_values)
         
         return False
