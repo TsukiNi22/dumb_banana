@@ -11,37 +11,41 @@ Edition:
 ##  12/05/2025 by Tsukini
 
 File Name:
-##  duba.py
+##  argument.py
 
 File Description:
-##  Main file of the model
+##  Check argument given
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """ Import """
 try:
-    from model.argument import argument_handler
+    from model.duba_class import DumbBanana
 except ImportError as e:
     print(f"Import Error: {e}")
     exit(1)
 
 """ Program """
-if __name__ != "model.duba":
-    print("duba is a module, can only be imported!")
-    exit(1)
+def argument_handler(generate, dataset, column, neuron, layer):
+    # init the neuron network
+    dumb = DumbBanana(generate, dataset, column, neuron, layer)
 
-# generate  -> "neuron" / "column"      -> Generate neurones or column value
-# dataset   -> dictionaire (int, float) -> dictionaire of int and float value
-# column    -> str                      -> column of the dictionaire to generate or train
-# neuron    -> file_path                -> file to save or use the neuron
-# layer     -> list                     -> With generate=True, neurones number to set per layer
-def dumb_banana(generate, dataset, column, neuron, layer = []):
+    # check the type of the argument passed
+    if (generate != "neuron" and generate != "column"):
+        print("Generate can only be a 'neuron' or 'column'.")
+        exit(1)
+    if (not isinstance(dataset, dict)):
+        print("The given dataset is not a dictionary.")
+        exit(1)
+    if (not isinstance(neuron, str)):
+        print("The given neuron path is not a str.")
+        exit(1)
+    if (generate == "neuron" and not isinstance(layer, list)):
+        print("The given layer is not a list of int value.")
+        exit(1)
 
-    # init and check the given argument
-    dumb = argument_handler(generate, dataset, column, neuron, layer)
-
-    if (dumb == None)
-        print("Dumb Banana have been stoped!!!")
-        return None
-
-    if (generate == "column"):
-        return dumb.generated_column
+    if (generate == "neuron"):
+        if (dumb.init_neuron())
+            return None
+    else:
+        dumb.init_column()
+    return dumb
