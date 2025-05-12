@@ -63,20 +63,20 @@ class DumbBanana():
             print(f"Can't found the column '{self.column}' in the dictionary keys.")
             exit(1)
         for key in keys:
-            if (not all(isinstance(val, int) for val in self.dataset[key])):
+            if (not all(isinstance(val, int) or isinstance(val, float) for val in self.dataset[key])):
                 print(f"Invalid value in the dictionary at the column '{key}', can only be int or float.")
                 exit(1)
 
         # setup the neuron file
         dirs = path.dirname(self.neuron)
-        if not path.exists(dirs):
+        if not path.exists(dirs) and dirs != "":
             try:
                 makedirs(dirs)
             except PermissionError:
                 print(f"Invalid permission, can't create the dirs: '{dirs}'")
                 exit(1)
-        if not path.isfile(self.neuron):
-            res = str(input("The file '{self.neuron}' already exit, do you want to overwrite the file (y/n)?"))
+        if path.isfile(self.neuron):
+            res = str(input(f"The file '{self.neuron}' already exit, do you want to overwrite the file (y/n)? "))
             if (res == "N"  or res == "n" or res == "No" or res == "no" or res == "NO" or res == "nO"):
                 return True
 
@@ -102,7 +102,6 @@ class DumbBanana():
             self.neuron_values.append(layer_values)
         # add the last neuron who synthetise all
         self.neuron_values.append([0])
-        self.setup_neuron_value()
 
         return False
 
@@ -110,11 +109,11 @@ class DumbBanana():
         # check the dictionary value
         keys = list(self.dataset.keys())
         if (self.column in keys):
-            res = str(input("The column '{self.column}' already exit, do you want to overwrite the column values (y/n)?"))
+            res = str(input(f"The column '{self.column}' already exit, do you want to overwrite the column values (y/n)? "))
             if (res == "N"  or res == "n" or res == "No" or res == "no" or res == "NO" or res == "nO"):
                 return True
         for key in keys:
-            if (not all(isinstance(val, int) for val in self.dataset[key])):
+            if (not all(isinstance(val, int) or isinstance(val, float) for val in self.dataset[key])):
                 print(f"Invalid value in the dictionary at the column '{key}', can only be int or float.")
                 exit(1)
 
