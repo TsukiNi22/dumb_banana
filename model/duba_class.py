@@ -62,7 +62,7 @@ class DumbBanana():
             print(f"Can't found the column '{self.column}' in the dictionary keys.")
             exit(1)
         for key in keys:
-            if (not all(isinstance(val, int) for val in self.dataset[key]):
+            if (not all(isinstance(val, int) for val in self.dataset[key])):
                 print(f"Invalid value in the dictionary at the column '{key}', can only be int or float.")
                 exit(1)
 
@@ -75,12 +75,12 @@ class DumbBanana():
                 print(f"Invalid permission, can't create the dirs: '{dirs}'")
                 exit(1)
         if not path.isfile(self.neuron):
-                res = str(input("The file '{self.neuron}' already exit, do you want to overwrite the file (y/n)?"))
+            res = str(input("The file '{self.neuron}' already exit, do you want to overwrite the file (y/n)?"))
             if (res == "N"  or res == "n" or res == "No" or res == "no" or res == "NO" or res == "nO"):
                 return True
 
         # setup generated neuron list
-        if (not all(isinstance(val, int) for val in self.layer):
+        if (not all(isinstance(val, int) for val in self.layer)):
             print(f"Invalid value type in the given layer, can only be int.")
         for neuron_nb in len(self.layer):
             layer = []
@@ -94,7 +94,7 @@ class DumbBanana():
         # check the dictionary value
         keys = list(self.dataset.keys())
         for key in keys:
-            if (not all(isinstance(val, int) for val in self.dataset[key]):
+            if (not all(isinstance(val, int) for val in self.dataset[key])):
                 print(f"Invalid value in the dictionary at the column '{key}', can only be int or float.")
                 exit(1)
 
