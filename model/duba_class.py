@@ -118,8 +118,8 @@ class DumbBanana():
                 exit(1)
 
         # setup the neuron network
-        if (path.isfile(neuron)):
-            print(f"The given neuron network path is not a valid path: {neuron}")
+        if (not path.isfile(self.neuron)):
+            print(f"The given neuron network path is not a valid path: {self.neuron}")
             exit(1)
         self.get_neuron()
         for i in range(len(self.neuron_network)):
