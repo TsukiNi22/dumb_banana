@@ -42,10 +42,10 @@ def argument_handler(generate, dataset, column, neuron, layer, variance, varianc
     if (generate == "neuron" and not isinstance(layer, list)):
         print("The given layer is not a list of int value.")
         exit(1)
-    if (generate == "neuron" and not isinstance(variance, int)):
+    if (generate == "neuron" and not isinstance(variance, float)):
         print("The given variance is not a int value.")
         exit(1)
-    if (generate == "neuron" and not isinstance(variance_time_decrease, int)):
+    if (generate == "neuron" and not isinstance(variance_time_decrease, float)):
         print("The given variance time decrease is not a int value.")
         exit(1)
     if (generate == "neuron" and not isinstance(training_round, int)):

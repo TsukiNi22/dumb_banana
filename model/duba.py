@@ -50,5 +50,5 @@ def dumb_banana(generate, dataset, column, neuron, layer = [], variance = .1, va
     if (dumb.generate == "neuron"):
         neuron_adjustement(dumb)
         dumb.save_neuron()
-    else (dumb.generate == "column")
+    elif (dumb.generate == "column"):
         pass

@@ -27,4 +27,8 @@ except ImportError as e:
 
 """ Program """
 def neuron_adjustement(dumb):
-    pass
+    #for round_nb in range(dumb.training_round):
+    for round_nb in range(1):
+        for i in range(len(dumb.dataset[dumb.column])):
+            estimation = dumb.estimation(i)
+            print(f"n°{i} = {estimation} | {dumb.dataset[dumb.column][i]}")

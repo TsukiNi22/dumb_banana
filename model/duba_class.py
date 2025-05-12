@@ -45,6 +45,19 @@ class DumbBanana():
         self.neuron_network = [] # [bias, coef, coef, ...] = neuron | [neuron, ...] = layer | [layer, ...] = neuron_network
         self.neuron_values = []
 
+    def estimation(self, row):
+        data = []
+        keys = list(self.dataset.keys())
+
+        keys.pop(keys.index(self.column))
+        try:
+            for key in keys:
+                data.append(self.dataset[key][row])
+        except IndexError as e:
+            print(f"All the column of the dataset must be at least of the '{self.column}' column size.")
+            exit(1)
+        return self.neuron_values[-1][0]
+
     def get_neuron(self):
         try:
             with open(self.neuron, "r") as file:
