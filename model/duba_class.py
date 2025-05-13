@@ -21,7 +21,7 @@ File Description:
 try:
     from os import path, makedirs
     from json import load, dump
-    from numpy import linspace, exp, random
+    from numpy import linspace, exp, random, clip
 except ImportError as e:
     print(f"Import Error: {e}")
     exit(1)
@@ -29,7 +29,7 @@ except ImportError as e:
 """ Class """
 class DumbBanana():
     
-    def __init__(self, generate, dataset, column, neuron, layer, start_variance, end_variance, variance_decrease, training_round, bias_min, bias_max, coef_min, coef_max):
+    def __init__(self, generate, dataset, column, neuron, layer, start_variance, end_variance, variance_decrease, training_round, bias_min, bias_max, coef_min, coef_max, k):
         # given argument
         self.generate = generate
         self.dataset = dataset
@@ -37,6 +37,7 @@ class DumbBanana():
         self.neuron = neuron
 
         # option
+        self.k = k
         self.bias_min = bias_min
         self.bias_max = bias_max
         self.coef_min = coef_min
@@ -48,6 +49,7 @@ class DumbBanana():
         self.training_round = training_round
 
         # neuron data
+        self.variation = None
         self.neuron_network = [] # [bias, coef, coef, ...] = neuron | [neuron, ...] = layer | [layer, ...] = neuron_network
         self.neuron_values = []
         self.neuron_percent = []
@@ -96,7 +98,7 @@ class DumbBanana():
 
         return self.neuron_values[-1][0]
 
-    def adjust(self, variation, round_nb):
+    def adjust(self, variation, round_nb, row):
         
         # set the value in percent
         total = 0
@@ -107,7 +109,12 @@ class DumbBanana():
             for j in range(len(self.neuron_values[i])):
                 self.neuron_percent[i][j] = self.neuron_values[i][j] / total
         
-        # modifie the coef value due to the wight calculated just above
+        # calcul the weight of the variation
+        if (self.variation == None or self.variation < abs(variation)):
+            self.variation = abs(variation)
+        weight = normalized_exp_growth(abs(variation), self.variation, self.k)
+
+        # modifie the coef value due to the weight calculated just above
         signe = 1
         if (variation < 0):
             signe = -1
@@ -224,3 +231,9 @@ class DumbBanana():
             self.neuron_values.append(layer_values)
         
         return False
+
+def normalized_exp_growth(x, n_max, k = 5):
+    x = clip(x, 0, n_max)
+    raw = 1 - exp(-k * x / n_max)
+    max_val = 1 - exp(-k)
+    return raw / max_val
