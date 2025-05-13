@@ -69,7 +69,7 @@ def duba_dataset(dataset, column, percent = .5):
     if (not isinstance(dataset, dict)):
         print("The given dataset is not a dictionary.")
         exit(1)
-    if (not isinstance(neuron, str)):
+    if (not isinstance(column, str)):
         print("The given neuron path is not a str.")
         exit(1)
     if (not isinstance(percent, float)):
@@ -86,25 +86,24 @@ def duba_dataset(dataset, column, percent = .5):
     # setup of the set
     trainingset = {}
     testingset = {}
-    testing_column = []
+    testing_values = []
     size = len(dataset[column])
     training_index = sort(random.choice(size - 1, size = int(size * percent), replace = False))
     testing_index = sort(delete(arange(size - 1), training_index))
 
-    for index in rdm_index:
+    for key in keys:
+        trainingset[key] = []
+        if (key != column):
+            testingset[key] = []
+    for i in training_index:
         for key in keys:
-            trainingset[key] = []
+            trainingset[key].append(dataset[key][i])
+    for i in testing_index:
+        for key in keys:
             if (key != column):
-                testset[key] = []
-        for i in training_index:
-            for key in keys:
-                trainingset[key].append(dataset[key][i])
-        for i in testing_index:
-            for key in keys:
-                if (key == column):
-                    testset[key].append(dataset[key][i])
-                else:
-                    testing_column.append(dataset[key][i])
+                testingset[key].append(dataset[key][i])
+            else:
+                testing_values.append(dataset[key][i])
 
     return trainingset, testingset, testing_values
 
