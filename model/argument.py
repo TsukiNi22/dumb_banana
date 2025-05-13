@@ -8,7 +8,7 @@
  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝╚═╝  ╚═╝
 
 Edition:
-##  12/05/2025 by Tsukini
+##  13/05/2025 by Tsukini
 
 File Name:
 ##  argument.py
@@ -25,9 +25,9 @@ except ImportError as e:
     exit(1)
 
 """ Program """
-def argument_handler(generate, dataset, column, neuron, layer, variance, variance_time_decrease, training_round):
+def argument_handler(generate, dataset, column, neuron, layer, start_variance, end_variance, variance_decrease, training_round):
     # init the neuron network
-    dumb = DumbBanana(generate, dataset, column, neuron, layer, variance, variance_time_decrease, training_round)
+    dumb = DumbBanana(generate, dataset, column, neuron, layer, start_variance, end_variance, variance_decrease, training_round)
 
     # check the type of the argument passed
     if (generate != "neuron" and generate != "column"):
@@ -42,11 +42,14 @@ def argument_handler(generate, dataset, column, neuron, layer, variance, varianc
     if (generate == "neuron" and not isinstance(layer, list)):
         print("The given layer is not a list of int value.")
         exit(1)
-    if (generate == "neuron" and not isinstance(variance, float)):
-        print("The given variance is not a int value.")
+    if (generate == "neuron" and not isinstance(start_variance, float)):
+        print("The given start variance is not a int value.")
         exit(1)
-    if (generate == "neuron" and not isinstance(variance_time_decrease, float)):
-        print("The given variance time decrease is not a int value.")
+    if (generate == "neuron" and not isinstance(end_variance, float)):
+        print("The given end variance is not a int value.")
+        exit(1)
+    if (generate == "neuron" and not isinstance(variance_decrease, float)):
+        print("The given variance decrease is not a int value.")
         exit(1)
     if (generate == "neuron" and not isinstance(training_round, int)):
         print("The given variance time decrease is not a int value.")

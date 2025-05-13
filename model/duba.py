@@ -8,7 +8,7 @@
  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝╚═╝  ╚═╝
 
 Edition:
-##  12/05/2025 by Tsukini
+##  13/05/2025 by Tsukini
 
 File Name:
 ##  duba.py
@@ -35,13 +35,14 @@ if __name__ != "model.duba":
 # column    -> str                      -> column of the dictionaire to generate or train
 # neuron    -> file_path                -> file to save or use the neuron
 # layer     -> list                     -> With generate=True, neurones number to set per layer
-# variance  -> float                    -> Manage the value at start for the variance to be rectified
-# variance_time_decrease    -> float    -> Manage the time for the variance to decrease
+# start_variance            -> float    -> Manage the value at start for the variance
+# end_variance              -> float    -> Manage the value at end for the variance
+# variance_decrease         -> float    -> Manage the decrease of the variance
 # training_round            -> int      -> Number of round to set the bias and coef
-def dumb_banana(generate, dataset, column, neuron, layer = [], variance = .1, variance_time_decrease = 1.0, training_round = 1000):
+def dumb_banana(generate, dataset, column, neuron, layer = [], start_variance = .1, end_variance = .1 / 100, variance_decrease = 10.0, training_round = 1000):
 
     # init and check the given argument
-    dumb = argument_handler(generate, dataset, column, neuron, layer, variance, variance_time_decrease, training_round)
+    dumb = argument_handler(generate, dataset, column, neuron, layer, start_variance, end_variance, variance_decrease, training_round)
 
     if (dumb == None):
         print("Dumb Banana have been stoped.")

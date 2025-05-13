@@ -8,7 +8,7 @@
  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝╚═╝  ╚═╝
 
 Edition:
-##  12/05/2025 by Tsukini
+##  13/05/2025 by Tsukini
 
 File Name:
 ##  neuron.py
@@ -27,13 +27,11 @@ except ImportError as e:
 
 """ Program """
 def neuron_adjustement(dumb):
-    #for round_nb in range(dumb.training_round):
-    for round_nb in range(1):
+    for round_nb in range(dumb.training_round):
         variations = []
         for i in range(len(dumb.dataset[dumb.column])):
             estimation = dumb.estimation(i)
             variations.append(dumb.dataset[dumb.column][i] - estimation)
-            print(f"n°{i} = {estimation} | {dumb.dataset[dumb.column][i]}")
         variation = sum(variations) / len(variations)
-        print(f"Variation: {variation}")
-        dumb.adjust(variation, )
+        print(f"{variation}\t|\t{dumb.variance}")
+        dumb.adjust(variation, round_nb)
