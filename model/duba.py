@@ -21,6 +21,7 @@ File Description:
 try:
     from model.argument import argument_handler
     from model.neuron import neuron_adjustement, column_generation
+    from numpy import random, sort, arange, delete
 except ImportError as e:
     print(f"Import Error: {e}")
     exit(1)
@@ -58,3 +59,66 @@ def dumb_banana(generate, dataset, column, neuron, layer = [], start_variance = 
         dumb.save_neuron()
     elif (dumb.generate == "column"):
         column_generation(dumb)
+
+# dataset   -> dictionaire (int, float) -> dictionaire of int and float value
+# column    -> str                      -> column of the dictionaire who will be trained
+# percent   -> float                    -> percent to use in the generation of the neuron network
+def duba_dataset(dataset, column, percent = .5):
+
+    # check of the argument
+    if (not isinstance(dataset, dict)):
+        print("The given dataset is not a dictionary.")
+        exit(1)
+    if (not isinstance(neuron, str)):
+        print("The given neuron path is not a str.")
+        exit(1)
+    if (not isinstance(percent, float)):
+        print("The given percent is not a float.")
+        exit(1)
+    keys = dataset.keys()
+    if (not column in keys):
+        print("The given column is not in the dataset.")
+        exit(1)
+    if (percent < .0 or percent > 1.):
+        print(f"The given percent is not between 0.0 and 1.0: {percent}")
+        exit(1)
+    
+    # setup of the set
+    trainingset = {}
+    testingset = {}
+    testing_column = []
+    size = len(dataset[column])
+    training_index = sort(random.choice(size - 1, size = int(size * percent), replace = False))
+    testing_index = sort(delete(arange(size - 1), training_index))
+
+    for index in rdm_index:
+        for key in keys:
+            trainingset[key] = []
+            if (key != column):
+                testset[key] = []
+        for i in training_index:
+            for key in keys:
+                trainingset[key].append(dataset[key][i])
+        for i in testing_index:
+            for key in keys:
+                if (key == column):
+                    testset[key].append(dataset[key][i])
+                else:
+                    testing_column.append(dataset[key][i])
+
+    return trainingset, testingset, testing_values
+
+# generated_values  -> list                     -> list of the value generated
+# testing_values    -> list                     -> list of the real value
+def duba_accuracy(generated_values, testing_values):
+
+    # check of the argument
+    if (not isinstance(generated_values, list)):
+        print("The given generated values is not a list.")
+        exit(1)
+    if (not isinstance(testing_values, list)):
+        print("The given testing values is not a list.")
+        exit(1)
+
+    # return the class that can be call for some value
+    return Accuracy(generated_values, testing_values)

@@ -11,31 +11,39 @@ Edition:
 ##  13/05/2025 by Tsukini
 
 File Name:
-##  neuron.py
+##  accuracy_class.py
 
 File Description:
-##  Adjust the bias and coef of the neuron
+##  Class for the accuracy testing
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """ Import """
 try:
-    from os import path, makedirs
-    from json import load, dump
+    import numpy as np
 except ImportError as e:
     print(f"Import Error: {e}")
     exit(1)
 
-""" Program """
-def neuron_adjustement(dumb):
-    for round_nb in range(dumb.training_round):
-        variations = []
-        for i in range(len(dumb.dataset[dumb.column])):
-            estimation = dumb.estimation(i)
-            variations.append(dumb.dataset[dumb.column][i] - estimation)
-            dumb.adjust(dumb.dataset[dumb.column][i] - estimation, round_nb, i)
-        variation = sum(variations) / len(variations)
-    print(f"Last variation mean from data set: {variation:.16F}")
+""" Class """
+class Accuracy():
 
-def column_generation(dumb):
-    for i in range(len(dumb.dataset[dumb.column])):
-        dumb.dataset[dumb.column][i] = dumb.estimation(i)
+    def __init__(self, generated_values, testing_values):
+        # setup parametre
+        self.generated_values = generated_values
+        self.testing_values = testing_values
+    
+    def r2(self):
+        arr_test = np.array(self.testing_values)
+        arr_gene = np.array(self.generated_values)
+        ss_res = np.sum((arr_test - arr_gene) ** 2)
+        ss_tot = np.sum((arr_test - np.mean(arr_test)) ** 2)
+        return 1 - (ss_res / ss_tot)
+
+    def mae(self):
+        arr_test = np.array(self.testing_values)
+        arr_gene = np.array(self.generated_values)
+        difference = np.abs(arr_test - arr_gene)
+        return np.mean(difference)
+    
+    #def (self):
+    #    pass

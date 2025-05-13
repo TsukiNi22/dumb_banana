@@ -26,6 +26,7 @@ except ImportError as e:
 
 """ Program """
 def argument_handler(generate, dataset, column, neuron, layer, start_variance, end_variance, variance_decrease, training_round, bias_min, bias_max, coef_min, coef_max, k):
+
     # init the neuron network
     dumb = DumbBanana(generate, dataset, column, neuron, layer, start_variance, end_variance, variance_decrease, training_round, bias_min, bias_max, coef_min, coef_max, k)
 
