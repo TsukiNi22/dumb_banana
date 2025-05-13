@@ -21,7 +21,7 @@ File Description:
 try:
     from os import path, makedirs
     from json import load, dump
-    from numpy import linspace, exp
+    from numpy import linspace, exp, random
 except ImportError as e:
     print(f"Import Error: {e}")
     exit(1)
@@ -29,7 +29,7 @@ except ImportError as e:
 """ Class """
 class DumbBanana():
     
-    def __init__(self, generate, dataset, column, neuron, layer, start_variance, end_variance, variance_decrease, training_round):
+    def __init__(self, generate, dataset, column, neuron, layer, start_variance, end_variance, variance_decrease, training_round, bias_min, bias_max, coef_min, coef_max):
         # given argument
         self.generate = generate
         self.dataset = dataset
@@ -37,6 +37,10 @@ class DumbBanana():
         self.neuron = neuron
 
         # option
+        self.bias_min = bias_min
+        self.bias_max = bias_max
+        self.coef_min = coef_min
+        self.coef_max = coef_max
         self.layer = layer
         self.start_variance = start_variance
         self.end_variance = end_variance
@@ -57,15 +61,14 @@ class DumbBanana():
         self.variance_array = x_end + (x_start - x_end) * (1 - 1 / (1 + exp(-steepness * (t - 0.5))))
         self.variance = self.variance_array[0]
 
-    def reset_array(self, array):
-        for layer in array:
-            for j in range(len(layer)):
-                layer[j] = 0
-                # layer[j] = self.neuron_network[i][j][0]
 
     def estimation(self, row):
         # reset the value stored in neuron_values
-        self.reset_array(self.neuron_values)
+        for i in range(len(self.neuron_values)):
+            for j in range(len(self.neuron_values[i])):
+                # Commented for the bias desactivation
+                #self.neuron_values[i][j] = self.neuron_network[i][j][0]
+                self.neuron_values[i][j] = 0
 
         # get the line value from the dataset row
         data = []
@@ -94,27 +97,15 @@ class DumbBanana():
         return self.neuron_values[-1][0]
 
     def adjust(self, variation, round_nb):
-        # reset the value stored in neuron_percent
-        self.reset_array(self.neuron_percent)
         
-        # get the percentage of action to the result
-        self.neuron_percent[-1][0] = 1
-        for i in range(len(self.neuron_network) - 1):
-            layer = self.neuron_network[-1 - (i + 1)]
-            for j in range(len(layer)):
-                neuron = layer[j]
-                for k in range(len(neuron) - 1):
-                    coef = neuron[k + 1]
-                    self.neuron_percent[-1 - (i + 1)][j] += self.neuron_percent[-1 - i][k] * coef
-
         # set the value in percent
         total = 0
-        for layer in self.neuron_percent:
-            for j in range(len(layer)):
-                total += layer[j]
-        for layer in self.neuron_percent:
-            for j in range(len(layer)):
-                layer[j] = layer[j] / total
+        for layer in self.neuron_values:
+            for n in layer:
+                total += n
+        for i in range(len(self.neuron_values)):
+            for j in range(len(self.neuron_values[i])):
+                self.neuron_percent[i][j] = self.neuron_values[i][j] / total
         
         # modifie the coef value due to the wight calculated just above
         signe = 1
@@ -124,9 +115,13 @@ class DumbBanana():
             layer = self.neuron_network[i]
             for j in range(len(layer)):
                 neuron = layer[j]
+                # Commented for the bias
+                #diff = []
                 for k in range(len(neuron) - 1):
-                    neuron[k + 1] += neuron[k + 1] * self.variance * self.neuron_percent[i][j] * signe
-        
+                    #diff.append(neuron[k + 1])
+                    neuron[k + 1] += neuron[k + 1] * self.variance * self.neuron_percent[i][j] * self.neuron_percent[i + 1][k] * signe
+                    #diff[-1] = 1 - (neuron[k + 1] / diff[-1])
+                #layer[j][0] += layer[j][0] * (sum(diff) / len(diff)) * signe
         self.variance = self.variance_array[round_nb]
 
     def get_neuron(self):
@@ -177,27 +172,31 @@ class DumbBanana():
         # add the neuron for the input
         layer_links = []
         layer_values = []
+        layer_percent = []
         for i in range(len(keys) - 1):
-            layer_links.append([1])
+            layer_links.append([random.uniform(self.bias_min, self.bias_max)])
             for j in range(self.layer[0]):
-                layer_links[-1].append(1)
+                layer_links[-1].append(random.uniform(self.coef_min, self.coef_max))
             layer_values.append(0)
+            layer_percent.append(0)
         self.neuron_network.append(layer_links)
         self.neuron_values.append(layer_values)
-        self.neuron_percent.append(layer_values)
+        self.neuron_percent.append(layer_percent)
         # add the neuron of the chosen layer
         for i in range(len(self.layer)):
             layer_links = []
             layer_values = []
+            layer_percent = []
             for j in range(self.layer[i]):
-                layer_links.append([1])
+                layer_links.append([random.uniform(self.bias_min, self.bias_max)])
                 if (i + 1 < len(self.layer)):
                     for k in range(self.layer[i + 1]):
-                        layer_links[-1].append(1)
+                        layer_links[-1].append(random.uniform(self.coef_min, self.coef_max))
                 layer_values.append(0)
+                layer_percent.append(0)
             self.neuron_network.append(layer_links)
             self.neuron_values.append(layer_values)
-            self.neuron_percent.append(layer_values)
+            self.neuron_percent.append(layer_percent)
 
         return False
 
@@ -223,6 +222,5 @@ class DumbBanana():
             for j in range(len(self.neuron_network[i])):
                 layer_values.append(0)
             self.neuron_values.append(layer_values)
-        print(self.neuron_network)
         
         return False

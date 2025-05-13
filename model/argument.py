@@ -25,9 +25,9 @@ except ImportError as e:
     exit(1)
 
 """ Program """
-def argument_handler(generate, dataset, column, neuron, layer, start_variance, end_variance, variance_decrease, training_round):
+def argument_handler(generate, dataset, column, neuron, layer, start_variance, end_variance, variance_decrease, training_round, bias_min, bias_max, coef_min, coef_max):
     # init the neuron network
-    dumb = DumbBanana(generate, dataset, column, neuron, layer, start_variance, end_variance, variance_decrease, training_round)
+    dumb = DumbBanana(generate, dataset, column, neuron, layer, start_variance, end_variance, variance_decrease, training_round, bias_min, bias_max, coef_min, coef_max)
 
     # check the type of the argument passed
     if (generate != "neuron" and generate != "column"):
@@ -43,16 +43,28 @@ def argument_handler(generate, dataset, column, neuron, layer, start_variance, e
         print("The given layer is not a list of int value.")
         exit(1)
     if (generate == "neuron" and not isinstance(start_variance, float)):
-        print("The given start variance is not a int value.")
+        print("The given start variance is not a float value.")
         exit(1)
     if (generate == "neuron" and not isinstance(end_variance, float)):
-        print("The given end variance is not a int value.")
+        print("The given end variance is not a float value.")
         exit(1)
     if (generate == "neuron" and not isinstance(variance_decrease, float)):
-        print("The given variance decrease is not a int value.")
+        print("The given variance decrease is not a float value.")
         exit(1)
     if (generate == "neuron" and not isinstance(training_round, int)):
         print("The given variance time decrease is not a int value.")
+        exit(1)
+    if (generate == "neuron" and not isinstance(bias_min, float)):
+        print("The given bias min is not a float value.")
+        exit(1)
+    if (generate == "neuron" and not isinstance(bias_max, float)):
+        print("The given bias max is not a float value.")
+        exit(1)
+    if (generate == "neuron" and not isinstance(coef_min, float)):
+        print("The given coef min is not a float value.")
+        exit(1)
+    if (generate == "neuron" and not isinstance(coef_max, float)):
+        print("The given coef max is not a float value.")
         exit(1)
 
     if (generate == "neuron"):

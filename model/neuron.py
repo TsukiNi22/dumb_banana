@@ -32,6 +32,6 @@ def neuron_adjustement(dumb):
         for i in range(len(dumb.dataset[dumb.column])):
             estimation = dumb.estimation(i)
             variations.append(dumb.dataset[dumb.column][i] - estimation)
+            dumb.adjust(dumb.dataset[dumb.column][i] - estimation, round_nb)
         variation = sum(variations) / len(variations)
         print(f"{variation}\t|\t{dumb.variance}")
-        dumb.adjust(variation, round_nb)
