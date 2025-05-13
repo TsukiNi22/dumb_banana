@@ -25,10 +25,16 @@ except ImportError as e:
     exit(1)
 
 """ Program """
-def argument_handler(generate, dataset, column, neuron, layer, start_variance, end_variance, variance_decrease, training_round, bias_min, bias_max, coef_min, coef_max, k):
+def argument_handler(generate, dataset, column, neuron, layer,
+        start_variance, end_variance, variance_decrease, training_round,
+        bias_min, bias_max, coef_min, coef_max, k,
+        display):
 
     # init the neuron network
-    dumb = DumbBanana(generate, dataset, column, neuron, layer, start_variance, end_variance, variance_decrease, training_round, bias_min, bias_max, coef_min, coef_max, k)
+    dumb = DumbBanana(generate, dataset, column, neuron, layer,
+        start_variance, end_variance, variance_decrease, training_round,
+        bias_min, bias_max, coef_min, coef_max, k,
+        display)
 
     # check the type of the argument passed
     if (generate != "neuron" and generate != "column"):
@@ -69,6 +75,9 @@ def argument_handler(generate, dataset, column, neuron, layer, start_variance, e
         exit(1)
     if (generate == "neuron" and not isinstance(k, float)):
         print("The given k is not a float value.")
+        exit(1)
+    if (generate == "neuron" and not isinstance(display, bool)):
+        print("The given display is not a boolean value.")
         exit(1)
 
     if (generate == "neuron"):

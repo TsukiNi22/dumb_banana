@@ -21,6 +21,7 @@ File Description:
 try:
     from os import path, makedirs
     from json import load, dump
+    from math import log
 except ImportError as e:
     print(f"Import Error: {e}")
     exit(1)
@@ -34,6 +35,9 @@ def neuron_adjustement(dumb):
             variations.append(dumb.dataset[dumb.column][i] - estimation)
             dumb.adjust(dumb.dataset[dumb.column][i] - estimation, round_nb, i)
         variation = sum(variations) / len(variations)
+        if (dumb.display):
+            pre = int(log(dumb.training_round)) - 1
+            print(f"Training round n°{round_nb + 1:{pre}}/{dumb.training_round}: {variation:.16F}\t| {dumb.variance:.16F}")
     print(f"Last variation mean from data set: {variation:.16F}")
 
 def column_generation(dumb):

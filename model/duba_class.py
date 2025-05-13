@@ -29,7 +29,10 @@ except ImportError as e:
 """ Class """
 class DumbBanana():
     
-    def __init__(self, generate, dataset, column, neuron, layer, start_variance, end_variance, variance_decrease, training_round, bias_min, bias_max, coef_min, coef_max, k):
+    def __init__(self, generate, dataset, column, neuron, layer,
+            start_variance, end_variance, variance_decrease, training_round,
+            bias_min, bias_max, coef_min, coef_max, k,
+            display):
         # given argument
         self.generate = generate
         self.dataset = dataset
@@ -47,6 +50,7 @@ class DumbBanana():
         self.end_variance = end_variance
         self.variance_decrease = variance_decrease
         self.training_round = training_round
+        self.display = display
 
         # neuron data
         self.variation = None
