@@ -34,4 +34,8 @@ def neuron_adjustement(dumb):
             variations.append(dumb.dataset[dumb.column][i] - estimation)
             dumb.adjust(dumb.dataset[dumb.column][i] - estimation, round_nb, i)
         variation = sum(variations) / len(variations)
-        print(f"{variation:.16F}\t|\t{dumb.variance:.16F}")
+    print(f"Last variation mean from data set: {variation:.16F}")
+
+def column_generation(dumb):
+    for i in range(len(dumb.dataset[dumb.column])):
+        dumb.dataset[dumb.column][i] = dumb.estimation(i))

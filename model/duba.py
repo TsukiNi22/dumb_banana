@@ -20,7 +20,7 @@ File Description:
 """ Import """
 try:
     from model.argument import argument_handler
-    from model.neuron import neuron_adjustement
+    from model.neuron import neuron_adjustement, column_generation
 except ImportError as e:
     print(f"Import Error: {e}")
     exit(1)
@@ -57,10 +57,4 @@ def dumb_banana(generate, dataset, column, neuron, layer = [], start_variance = 
         neuron_adjustement(dumb)
         dumb.save_neuron()
     elif (dumb.generate == "column"):
-        variations = []
-        for i in range(len(dumb.dataset[dumb.column])):
-            estimation = dumb.estimation(i)
-            variations.append(dumb.dataset[dumb.column][i] - estimation)
-        variation = sum(variations) / len(variations)
-        print(f"{variation}")
-        pass
+        column_generation(dumb)

@@ -63,7 +63,6 @@ class DumbBanana():
         self.variance_array = x_end + (x_start - x_end) * (1 - 1 / (1 + exp(-steepness * (t - 0.5))))
         self.variance = self.variance_array[0]
 
-
     def estimation(self, row):
         # reset the value stored in neuron_values
         for i in range(len(self.neuron_values)):
