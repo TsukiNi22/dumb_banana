@@ -170,9 +170,11 @@ class DumbBanana():
                 print(f"Invalid permission, can't create the dirs: '{dirs}'")
                 exit(1)
         if path.isfile(self.neuron):
-            res = str(input(f"The file '{self.neuron}' already exit, do you want to overwrite the file (y/n)? "))
-            if (res == "N"  or res == "n" or res == "No" or res == "no" or res == "NO" or res == "nO"):
-                return True
+            res = None
+            while (res != "1" and res != "2"):
+                res = str(input(f"The file '{self.neuron}' already exit, do you want to overwrite the file, use it as base, or quit (1/2/3)?"))
+                if (res == "3"):
+                    return True
 
         # setup the neuron network
         if (not all(isinstance(val, int) for val in self.layer)):
@@ -207,6 +209,10 @@ class DumbBanana():
             self.neuron_network.append(layer_links)
             self.neuron_values.append(layer_values)
             self.neuron_percent.append(layer_percent)
+
+        # use the past neuron network
+        if (res == "2"):
+            self.get_neuron()
 
         return False
 
